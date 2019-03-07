@@ -27,12 +27,12 @@ const updateTextOnActiveElement = (text, tabId, frameId = 0) => {
 
 const contextMenuCallback = async ({selectionText, frameId}, tab, askForDate) => {
   if (!selectionText || isNaN(selectionText)) {
-    return alert(`Can't convert to EUR a non-numeric value`);
+    return alert(chrome.i18n.getMessage('notNumericInputErrorMessage'));
   }
 
-  const targetDate = askForDate ? prompt('Input your desired date with YYYY-MM-DD format') : 'latest';
+  const targetDate = askForDate ? prompt(chrome.i18n.getMessage('dateInputPromptMessage')) : 'latest';
   if (targetDate) return;
-  
+
   const amountInEuros = await USDToEUR(parseFloat(selectionText), targetDate);
   updateTextOnActiveElement(amountInEuros, tab.id, frameId);
 }
@@ -44,5 +44,5 @@ const createContextMenu = (title, askForDate) => ({
 })
 
 chrome.contextMenus.removeAll();
-chrome.contextMenus.create(createContextMenu('Convert from USD to EUR', false));
-chrome.contextMenus.create(createContextMenu('Convert from USD to EUR with date', true));
+chrome.contextMenus.create(createContextMenu(chrome.i18n.getMessage('contextMenuUSDToEUR'), false));
+chrome.contextMenus.create(createContextMenu(chrome.i18n.getMessage('contextMenuUSDToEURWithDate'), true));

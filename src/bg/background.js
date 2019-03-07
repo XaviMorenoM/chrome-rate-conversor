@@ -17,14 +17,21 @@ const USDToEUR = async (usdAmount) => {
   return usdAmount / info.rates.USD;
 }
 
+const updateTextOnActiveElement = (text, tabId, frameId = 0) => {
+  chrome.tabs.executeScript(tab.id, {
+    frameId,
+    matchAboutBlank: true,
+    code: `document.execCommand('insertText', false, '${text}')`,
+  });
+}
 
-const contextMenuCallback = async ({selectionText, ...otherProps}, tab) => {
+const contextMenuCallback = async ({selectionText, frameId}, tab) => {
   if (!selectionText || isNaN(selectionText)) {
     return alert(`Can't convert to EUR a non-numeric value`);
   }
   const amountInUSD = parseFloat(selectionText);
   const amountInEuros = await USDToEUR(amountInUSD);
-  alert(`USD$ ${amountInUSD.toFixed(2)} is ${amountInEuros.toFixed(2)}€`);
+  updateTextOnActiveElement(amountInEuros, tab.id, frameId);
 }
 
 const contextMenuConfig = {

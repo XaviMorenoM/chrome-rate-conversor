@@ -31,7 +31,7 @@ const contextMenuCallback = async ({selectionText, frameId}, tab, askForDate) =>
   }
 
   const targetDate = askForDate ? prompt(chrome.i18n.getMessage('dateInputPromptMessage')) : 'latest';
-  if (targetDate) return;
+  if (!targetDate) return;
 
   const amountInEuros = await USDToEUR(parseFloat(selectionText), targetDate);
   updateTextOnActiveElement(amountInEuros, tab.id, frameId);

@@ -17,6 +17,8 @@
     "persistent": true
   },
   "permissions": [
-    "contextMenus"
+    "contextMenus",
+    "http://*/*",
+    "https://*/*"
   ]
 }
